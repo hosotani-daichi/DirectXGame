@@ -47,16 +47,16 @@ void GameScene::Update() {
 	//移動した座標をスプライトに反映
 	sprite_->SetPosition(position);
 
-	//デバックテキストの表示	
-	ImGui::Begin("Debug1");
-	//float3入力ボックス
-	ImGui::InputFloat3("InputFloat3", inputFloat3);
-	//float3スライダー
-	ImGui::SliderFloat3("SliderFloat3", inputFloat3, 0.0f, 1.0f);
-	ImGui::Text("kamata tarou %d.%d.%d", 2050, 12, 31);
-	ImGui::End();
-	//デモウィンドウの表示を有効化
-	ImGui::ShowDemoWindow();
+	////デバックテキストの表示	
+	//ImGui::Begin("Debug1");
+	////float3入力ボックス
+	//ImGui::InputFloat3("InputFloat3", inputFloat3);
+	////float3スライダー
+	//ImGui::SliderFloat3("SliderFloat3", inputFloat3, 0.0f, 1.0f);
+	//ImGui::Text("kamata tarou %d.%d.%d", 2050, 12, 31);
+	//ImGui::End();
+	////デモウィンドウの表示を有効化
+	//ImGui::ShowDemoWindow();
 	//デバッグカメラの更新
 	debugCamera_->Update();
 
