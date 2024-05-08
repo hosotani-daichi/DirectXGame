@@ -2,18 +2,65 @@
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::GameScene() {}
+//デストラクタ
+GameScene::~GameScene() {
+	delete model_;
+	delete modelBlock_;
+	for (WorldTransform* worldTransformBlocks : worldTransformBlocks_) {
+		delete worldTransformBlocks;
+	}
+	worldTransformBlocks_.clear();
+}
 
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	// 3Dモデルの生成
+	model_ = Model::Create();
+	//モデル読み込み
+	modelBlock_ = Model::CreateFromOBJ("cube");
+	//要素数
+	const uint32_t kNumBlockHorizontal = 20;
+	//ブロック一個分の横幅
+	const float kBlockWidth = 2.0f;
+	//要素数を変更する
+	worldTransformBlocks_.resize(kNumBlockHorizontal);
+	//キューブの生成
+	for (uint32_t i = 0; i < kNumBlockHorizontal; ++i) {
+		worldTransformBlocks_[i] = new WorldTransform();
+		worldTransformBlocks_[i]->Initialize();
+		worldTransformBlocks_[i]->translation_.x = kBlockWidth * i;
+		worldTransformBlocks_[i]->translation_.y = 0.0f;
+	}
+
 }
 
-void GameScene::Update() {}
+void GameScene::Update() { 
+	for (WorldTransform* worldTransformblock : worldTransformBlocks_) {
+	
+		//平行移動
+		Matrix4x4 result{
+		    1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			worldTransformblock->translation_.x, 
+			worldTransformblock->translation_.y, 
+			worldTransformblock->translation_.z,
+		    1.0f};
+
+		//平行移動だけ代入
+		worldTransformblock->matWorld_ = result;
+
+		//定数バッファに転送する
+		worldTransformblock->TransferMatrix();
+
+	}
+}
 
 void GameScene::Draw() {
 
@@ -42,6 +89,11 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	// ブロックの描画
+	for (WorldTransform* worldTransformBlock : worldTransformBlocks_) {
+		modelBlock_->Draw(*worldTransformBlock, viewProjection_);
+	}
+
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion
@@ -56,6 +108,8 @@ void GameScene::Draw() {
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
+
+	
 
 #pragma endregion
 }
