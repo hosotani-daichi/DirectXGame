@@ -11,6 +11,7 @@ GameScene::~GameScene() {
 	delete model_;
 	delete modelBlock_;
 	delete debugCamera_;
+	delete modelSkyDome_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -36,6 +37,13 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_, &viewProjection_);
+
+	// 3Dモデルの生成
+	modelSkyDome_ = Model::CreateFromOBJ("skydome",true);
+	//スカイドームの生成
+	skydome_ = new SkyDome();
+	// 自キャラの初期化
+	skydome_->Initialize(modelSkyDome_,&viewProjection_);
 
 	// 要素数
 	const uint32_t KNumBlockVirtical = 10;
@@ -71,6 +79,9 @@ void GameScene::Update() {
 
 	// 自キャラの更新
 	player_->Update();
+
+	// スカイドームの更新
+	skydome_->Update();
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
