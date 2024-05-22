@@ -3,6 +3,7 @@
 #include <MathUtilityForText.h>
 #include <cassert>
 
+
 GameScene::GameScene() {}
 // デストラクタ
 GameScene::~GameScene() {
