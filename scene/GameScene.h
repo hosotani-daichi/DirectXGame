@@ -76,7 +76,7 @@ private: // メンバ変数
 	//デバックカメラ有効
 	bool isDebugCameraActive_ = false;
 
-	//3Dモデル
+	//スカイドームの3Dモデル
 	Model* modelSkyDome_ = nullptr;
 
 	// スカイドーム

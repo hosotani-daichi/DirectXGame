@@ -24,7 +24,7 @@ public:
 	    WorldTransform worldTransform_;
 		//モデル
 	    Model* model_ = nullptr;
-
+		//ビュープロジェクション
 	    ViewProjection* viewProjection_ = nullptr;
 
 };

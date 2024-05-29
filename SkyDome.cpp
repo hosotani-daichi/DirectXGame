@@ -11,12 +11,13 @@ void SkyDome::Initialize(Model* model, ViewProjection* viewProjection) {
 	viewProjection_ = viewProjection;
 }
 
-void SkyDome::Update() {
-
+void SkyDome::Update()
+{ 
+	worldTransform_.UpdateMatrix();
 }
 
 void SkyDome::Draw() {
-	// ３Dモデルを描画
+	// 3Dモデルを描画
 	model_->Draw(worldTransform_, *viewProjection_);
 }
 

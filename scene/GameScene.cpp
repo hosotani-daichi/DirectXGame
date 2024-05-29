@@ -10,6 +10,7 @@ GameScene::~GameScene() {
 
 	delete player_;
 	delete model_;
+	delete skydome_;
 	delete modelBlock_;
 	delete debugCamera_;
 	delete modelSkyDome_;
@@ -39,7 +40,7 @@ void GameScene::Initialize() {
 	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_, &viewProjection_);
 
-	// 3Dモデルの生成
+	// スカイドームの3Dモデルの生成
 	modelSkyDome_ = Model::CreateFromOBJ("skydome",true);
 	//スカイドームの生成
 	skydome_ = new SkyDome();
@@ -89,22 +90,8 @@ void GameScene::Update() {
 			if (!worldTransformBlock)
 				continue;
 
-			// アフィン変換と転送
-			worldTransformBlock->UpdateMatrix();
-
-			// 平行移動
-			Matrix4x4 result{
-			    1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, worldTransformBlock->translation_.x, worldTransformBlock->translation_.y, worldTransformBlock->translation_.z,
-			    1.0f};
-
-			Matrix4x4 matWorld = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
-			worldTransformBlock->matWorld_ = matWorld;
-
-			// 平行移動だけ代入
-			worldTransformBlock->matWorld_ = result;
-
 			// 定数バッファに転送する
-			worldTransformBlock->TransferMatrix();
+			worldTransformBlock->UpdateMatrix();
 		}
 	}
 
@@ -155,6 +142,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+
+	//自キャラの描画
+	player_->Draw();
+	//スカイドームの描画
+	skydome_->Draw();
 
 	// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
