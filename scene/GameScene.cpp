@@ -32,7 +32,7 @@ void GameScene::Initialize() {
 	// 3Dモデルの生成
 	model_ = Model::Create();
 	// モデル読み込み
-	modelBlock_ = Model::CreateFromOBJ("cube");
+	modelBlock_ = Model::CreateFromOBJ("block");
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 	// 自キャラの生成
