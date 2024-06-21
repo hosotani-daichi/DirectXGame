@@ -27,7 +27,9 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	//ファイルを開く
 	std::ifstream file;
 	file.open(filePath);
-	assert(file.is_open());std::string line;
+	assert(file.is_open());
+	
+	std::string line;
 	//マップチップCSV
 	std::stringstream mapChipCsv;
 	//ファイルの内容を文字列ストリームにコピー
@@ -63,8 +65,8 @@ MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex
 	return mapChipData_.data[yIndex][xIndex];
 }
 
-vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) {
-	return vector3(kBlockWidth*xIndex,kBlockHeidht*(kNumBlockVirtical-1-yIndex),0); 
+Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) {
+	return Vector3(kBlockWidth*xIndex,kBlockHeidht*(kNumBlockVirtical-1-yIndex),0); 
 }
 
 
