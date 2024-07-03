@@ -30,7 +30,7 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(0,0);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1,18);
 
 	// モデル読み込み
 	modelBlock_ = Model::CreateFromOBJ("block");

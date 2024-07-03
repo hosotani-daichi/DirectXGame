@@ -240,5 +240,6 @@
     <None Include="Resources\shaders\Terrain.hlsli">
       <Filter>シェーダー ファイル</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
