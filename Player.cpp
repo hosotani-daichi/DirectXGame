@@ -72,6 +72,7 @@ void Player::Update() {
 			if (Input::GetInstance()->PushKey(DIK_UP)) {
 				// ジャンプ速度
 				velocity_ += Vector3(0, kJumpAcceleration, 0);
+			}
 
 		} else {
 
