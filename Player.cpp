@@ -29,8 +29,8 @@ void Player::Update() {
 			// 左右加速
 			Vector3 acceleration = {};
 			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
-				// 左移動中の右入力
-				if (velocity_.x < 0.0f) {
+				// 右移動中の左入力
+				if (velocity_.x > 0.0f) {
 					// 速度と逆方向に入力中は急ブレーキ
 					velocity_.x *= (1.0f - kAttenuation);
 				}
@@ -43,9 +43,10 @@ void Player::Update() {
 					// 旋回タイマーに時間を設定する
 					turnTimer_ = kTimeTurn;
 				}
+
 			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
-				// 右移動中の左入力
-				if (velocity_.x > 0.0f) {
+				// 左移動中の右入力
+				if (velocity_.x < 0.0f) {
 					// 速度と逆方向に入力中は急ブレーキ
 					velocity_.x *= (1.0f - kAttenuation);
 				}
@@ -59,41 +60,40 @@ void Player::Update() {
 					turnTimer_ = kTimeTurn;
 				}
 
+			}
 				// 加速/減速
-				velocity_ += acceleration;
-				// 最大速度制限
-				velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
-			} else {
-
+			velocity_ += acceleration;
+			// 最大速度制限
+			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+		} else {
 				// 非入力時は移動減衰をかける
 				velocity_.x *= (1.0f - kAttenuation);
-			}
+		}
 
-			if (Input::GetInstance()->PushKey(DIK_UP)) {
+		if (Input::GetInstance()->PushKey(DIK_UP)) {
 				// ジャンプ速度
 				velocity_ += Vector3(0, kJumpAcceleration, 0);
-			}
+		}
 
-		} else {
+	} else {
 
 			// 落下速度
 			velocity_ += Vector3(0, -kGravityAcceleration, 0);
 			// 落下速度制限
 			velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
-		}
+	}
 
-		// 旋回制御
-		if (turnTimer_ > 0.0f) {
-			turnTimer_ -= 1 / 60.0f;
+	// 旋回制御
+	if (turnTimer_ > 0.0f) {
+		turnTimer_ -= 1 / 60.0f;
 
-			// 左右の自キャラ角度テーブル
-			float destinationRotationYTable[]{std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
-			// 状態に応じた角度を取得する
-			float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
-			// 自キャラの角度を設定する
-			worldTransform_.rotation_.y = EaseInOut(destinationRotationY, turnFirstRotationY_, turnTimer_ / kTimeTurn);
-			// 旋回タイマーを1/60秒分カウントダウンする
-		}
+		// 左右の自キャラ角度テーブル
+		float destinationRotationYTable[]{std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
+		// 状態に応じた角度を取得する
+		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
+		// 自キャラの角度を設定する
+		worldTransform_.rotation_.y = EaseInOut(destinationRotationY, turnFirstRotationY_, turnTimer_ / kTimeTurn);
+		// 旋回タイマーを1/60秒分カウントダウンする
 	}
 
 	// 着地フラグ
@@ -113,28 +113,31 @@ void Player::Update() {
 		}
 	}
 
-	//接地判定
+	// 接地判定
 	if (onGround_) {
-	//ジャンプ開始
+		// ジャンプ開始
 		if (velocity_.y > 0.0f) {
-		//空中状態に移行
+			// 空中状態に移行
 			onGround_ = false;
 		}
 	} else {
-	//着地
+		// 着地
 		if (landing) {
-		//めり込み
+			// めり込み
 			worldTransform_.translation_.y = 1.0f;
-			//摩擦で横方向速度が減衰する
+			// 摩擦で横方向速度が減衰する
 			velocity_.x *= (1.0f - kAttenuation);
-			//下方向速度をリセット
+			// 下方向速度をリセット
 			velocity_.y = 0.0f;
-			//接地状態に移行
+			// 接地状態に移行
 			onGround_ = true;
 		}
 	}
 
-
+	// 移動
+	worldTransform_.translation_ += velocity_;
+	// 行列を定数でバッファに転送
+	worldTransform_.UpdateMatrix();
 }
 
 // 描画

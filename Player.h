@@ -51,7 +51,7 @@ private:
 	static inline const float kLimitRunSpeed = 0.1f;
 	static inline const float kTimeTurn = 1.0f;
 	// 重力加速度（下方向）
-	static inline const float kGravityAcceleration = 1.0f;
+	static inline const float kGravityAcceleration = 0.1f;
 	// 最大落下速度（下方向）
 	static inline const float kLimitFallSpeed = 1.0f;
 	// ジャンプ初速（上方向）
