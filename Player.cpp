@@ -72,7 +72,6 @@ void Player::Update() {
 			landing = true;
 
 			// 移動
-			worldTransform_.translation_ += velocity_;
 			// 行列を定数でバッファに転送
 			worldTransform_.UpdateMatrix();
 		}
@@ -100,7 +99,6 @@ void Player::Update() {
 	}
 
 	// 移動
-	worldTransform_.translation_ += velocity_;
 	// 行列を定数でバッファに転送
 	worldTransform_.UpdateMatrix();
 }
