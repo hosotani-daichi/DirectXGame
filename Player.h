@@ -55,6 +55,10 @@ public:
 	};
 
 	void CheckMapCollision(CollisionMapInfo& info);
+	void CheckMapCollisionUp(CollisionMapInfo& info);
+	void CheckMapCollisionDown(CollisionMapInfo& info);
+	void CheckMapCollisionRight(CollisionMapInfo& info);
+	void CheckMapCollisionLeft(CollisionMapInfo& info);
 
 	void CheckMapMove(CollisionMapInfo& info);
 
@@ -62,7 +66,9 @@ public:
 
 	void AnimateTurn();
 
-	void CheckMapCollisionUp(CollisionMapInfo& info);
+	void CheckMapLanding(const CollisionMapInfo& info);
+
+	void CheckMapWall(const CollisionMapInfo& info);
 
 	enum Corner {
 		kRightBottom, // 右下
@@ -104,6 +110,12 @@ private:
 	static inline const float kLimitFallSpeed = 1.0f;
 	// ジャンプ初速（上方向）
 	static inline const float kJumpAcceleration = 1.0f;
+	//着地時の速度減衰率
+	static inline const float kAttenuationLanding = 0.1f;
+	// 落下用
+	static inline const float kGroundSearchHeight = 0.06f;
+	//着地時の速度減衰率
+	static inline const float kAttenuationWall = 0.1f;
 	// キャラクターの当たり判定サイズ
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
