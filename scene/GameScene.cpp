@@ -38,17 +38,21 @@ void GameScene::Initialize() {
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
-	// 自キャラの生成
-	player_ = new Player();
-	// 自キャラの初期化
-	player_->Initialize(model_, &viewProjection_,playerPosition);
-
-	player_->SetMapChipField(mapChipField_);
-
 	// スカイドームの3Dモデルの生成
 	modelSkyDome_ = Model::CreateFromOBJ("skydome", true);
 	// スカイドームの生成
 	skydome_ = new SkyDome();
+
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+
+		
+	// 自キャラの生成
+	player_ = new Player();
+	// 自キャラの初期化
+	player_->Initialize(model_, &viewProjection_, playerPosition);
+
+	player_->SetMapChipField(mapChipField_);
 
 	//カメラコントロールの生成
 	cameracontroller_ = new CameraController();
@@ -66,9 +70,6 @@ void GameScene::Initialize() {
 	skydome_->Initialize(modelSkyDome_, &viewProjection_);
 
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
-
-	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 
 	GenerateBlocks();
 }

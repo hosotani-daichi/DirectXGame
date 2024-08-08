@@ -221,7 +221,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	}
 	//移動後の四つの角の座標
 	std::array<Vector3, kNumCorner> positionsNew;
-	for (uint32_t i = 0; i, positionsNew.size(); ++i) {
+	for (uint32_t i = 0; i< positionsNew.size(); ++i) {
 		positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.move, static_cast<Corner>(i));
 	}
 	MapChipType mapChipType;
