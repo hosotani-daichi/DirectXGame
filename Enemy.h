@@ -27,6 +27,7 @@ public:
 
 	// 衝突応答
 	void OnCollision(const Player* player);
+	void OnCollision(const Enemy* enemy);
 	// AABBを取得
 	AABB GetAABB();
 

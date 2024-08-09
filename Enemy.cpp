@@ -38,6 +38,11 @@ void Enemy::Draw() {
 
 void Enemy::OnCollision(const Player* player) { (void)player; }
 
+void Enemy::OnCollision(const Enemy* enemy) {
+	(void)enemy;
+	// ジャンプ開始
+}
+
 Vector3 Enemy::GetWorldPosition() {
 	// ワールド座標を取得
 	Vector3 worldPos;

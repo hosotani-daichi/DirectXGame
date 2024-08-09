@@ -175,7 +175,7 @@ void Player::InputMove() {
 void Player::OnCollision(const Enemy* enemy) {
 	(void)enemy;
 	// ジャンプ開始
-	velocity_ += Vector3();
+	velocity_ = Vector3(0, 2, 0);
 }
 
 void Player::CheckMapCollision(CollisionMapInfo& info) {
