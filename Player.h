@@ -1,3 +1,4 @@
+#include "AABB.h"
 #include "MathUtilityForText.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
@@ -8,6 +9,7 @@ class Enemy;
 
 #pragma once
 class Player {
+
 public:
 	///< summary>
 	/// 初期化
@@ -29,13 +31,6 @@ public:
 		kLeft,
 	};
 
-	// ワールド座標を取得
-	Vector3 GetWorldPosition();
-	// AABBを取得
-	AABB GetAABB();
-	// 衝突応答
-	void OnCollision(const Enemy* enemy);
-
 	LRDirection lrDirection_ = LRDirection::kRight;
 
 	// 旋回開始時の角度
@@ -53,6 +48,9 @@ public:
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
 	void InputMove();
+
+	// 衝突応答
+	void OnCollision(const Enemy* enemy);
 
 	// マップとの当たり判定情報
 	struct CollisionMapInfo {
@@ -87,6 +85,11 @@ public:
 		kNumCorner // 要素数
 	};
 
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+	// AABBを取得
+	AABB GetAABB();
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -103,8 +106,6 @@ private:
 	ViewProjection* viewProjection_ = nullptr;
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
-	// ワールド座標を取得
-	Vector3 GetWorldPosition();
 
 	// 加速
 	static inline const float kAcceleration = 0.01f;

@@ -1,15 +1,15 @@
 #pragma once
 
+#include "AABB.h"
 #include "Audio.h"
 #include "DirectXCommon.h"
+#include "Enemy.h"
 #include "Input.h"
 #include "MapChipField.h"
 #include "Model.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Enemy.h"
-#include "AABB.h"
 #include <CameraController.h>
 #include <DebugCamera.h>
 #include <Player.h>
@@ -66,7 +66,7 @@ private: // メンバ変数
 	// ３Dブロックモデル
 	Model* modelBlock_ = nullptr;
 
-	//敵キャラモデル
+	// 敵キャラモデル
 	Model* modelEnemy_ = nullptr;
 
 	/// テクスチャハンドル
@@ -81,7 +81,7 @@ private: // メンバ変数
 	// 自キャラ
 	Player* player_ = nullptr;
 
-	//敵キャラ
+	// 敵キャラ
 	Enemy* enemy_;
 	std::list<Enemy*> enemies_;
 

@@ -110,15 +110,6 @@ void Player::Draw() {
 	model_->Draw(worldTransform_, *viewProjection_);
 }
 
-AABB Player::GetAABB() { Vector3 worldPos = GetWorldPosition();
-	AABB aabb;
-	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
-	aabb.max = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
-	return aabb;
-}
-
-void Player::OnCollision(const Enemy* enemy) {}
-
 void Player::InputMove() {
 	// 接地状態
 	if (onGround_) {
@@ -181,6 +172,12 @@ void Player::InputMove() {
 	}
 }
 
+void Player::OnCollision(const Enemy* enemy) {
+	(void)enemy;
+	// ジャンプ開始
+	velocity_ += Vector3();
+}
+
 void Player::CheckMapCollision(CollisionMapInfo& info) {
 	CheckMapCollisionUp(info);
 	CheckMapCollisionDown(info);
@@ -199,12 +196,21 @@ Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
 }
 
 Vector3 Player::GetWorldPosition() {
-	//ワールド座標を取得
+	// ワールド座標を取得
 	Vector3 worldPos;
-	//ワールド行列移動成分を取得（ワールド座標）
+	// ワールド行列移動成分を取得（ワールド座標）
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
+	return worldPos;
+}
+
+AABB Player::GetAABB() {
+	Vector3 worldPos = GetWorldPosition();
+	AABB aabb;
+	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
+	aabb.max = {worldPos.x + kWidth / 2.0f, worldPos.y + kHeight / 2.0f, worldPos.z + kWidth / 2.0f};
+	return aabb;
 }
 
 void Player::CheckMapMove(CollisionMapInfo& info) {
@@ -340,7 +346,7 @@ void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
 	// ブロックにヒット？
 	if (hit) {
 		// めり込みを排除する方向に移動量を設定する
-		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(+ kWidth / 2.0f,0, 0));
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(+kWidth / 2.0f, 0, 0));
 		// めり込みブロックの範囲矩形
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 		info.move.x = std::max(0.0f, rect.right - worldTransform_.translation_.x - (kWidth / 2.0f + kBlank));
@@ -378,7 +384,7 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 	// ブロックにヒット？
 	if (hit) {
 		// めり込みを排除する方向に移動量を設定する
-		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0 - kWidth / 2.0f,0, 0));
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + Vector3(0 - kWidth / 2.0f, 0, 0));
 		// めり込みブロックの範囲矩形
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 		info.move.x = std::min(0.0f, rect.left - worldTransform_.translation_.x + (kWidth / 2.0f + kBlank));
