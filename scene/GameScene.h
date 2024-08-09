@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Enemy.h"
 #include <CameraController.h>
 #include <DebugCamera.h>
 #include <Player.h>
@@ -62,6 +63,9 @@ private: // メンバ変数
 	// ３Dブロックモデル
 	Model* modelBlock_ = nullptr;
 
+	//敵キャラモデル
+	Model* modelEnemy_ = nullptr;
+
 	/// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
@@ -73,6 +77,9 @@ private: // メンバ変数
 
 	// 自キャラ
 	Player* player_ = nullptr;
+
+	//敵キャラ
+	Enemy* enemy_;
 
 	// デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;

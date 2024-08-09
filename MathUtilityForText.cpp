@@ -138,11 +138,15 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	//エラー対策（使用しない）
 	Vector3 dm = scale;
 	//回転
+	// ｘ回転
+	Matrix4x4 RotateMatX = {1, 0, 0, 0, 0, cosf(rot.x), sinf(rot.x), 0, 0, -sinf(rot.x), cosf(rot.x), 0, 0, 0, 0, 1};
 	Matrix4x4 RotateMatY = {cosf(rot.y), 0, -sinf(rot.y), 0, 0, 1, 0, 0, sinf(rot.y), 0, cosf(rot.y), 0, 0, 0, 0, 1};
 	//平行移動行列の作成
 	Matrix4x4 TranslateMat = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, translate.x, translate.y, translate.z, 1};
+	// Ｘ軸回転*Ｙ軸回転で回転行列を合成
+	Matrix4x4 RotateMatAll = MatrixMultiply(RotateMatX, RotateMatY);
 	//回転*平行移動だけをワールド変換行列に
-	Matrix4x4 ansMat = MatrixMultiply(RotateMatY, TranslateMat);
+	Matrix4x4 ansMat = MatrixMultiply(RotateMatAll, TranslateMat);
 	return ansMat;
 }
 
@@ -166,5 +170,7 @@ Vector3& operator*=(Vector3& v, float s) {
 // Vector3の掛け算
 const Vector3 operator*(const Vector3& v, float s) {
 	Vector3 temp(v);
+
 	return temp *= s;
 }
+

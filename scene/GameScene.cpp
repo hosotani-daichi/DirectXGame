@@ -15,6 +15,8 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete modelSkyDome_;
 	delete mapChipField_;
+	delete modelEnemy_;
+	delete &enemy_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -30,11 +32,12 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1,18);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 
 	// モデル読み込み
 	modelBlock_ = Model::CreateFromOBJ("block");
 	model_ = Model::CreateFromOBJ("player");
+	modelEnemy_ = Model::CreateFromOBJ("enemy");
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
@@ -46,7 +49,11 @@ void GameScene::Initialize() {
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 
-		
+	// 敵キャラの生成
+	enemy_ = new Enemy();
+	// 敵キャラの初期化
+	enemy_->Initialize(modelEnemy_, &viewProjection_, playerPosition);
+
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
@@ -54,16 +61,16 @@ void GameScene::Initialize() {
 
 	player_->SetMapChipField(mapChipField_);
 
-	//カメラコントロールの生成
+	// カメラコントロールの生成
 	cameracontroller_ = new CameraController();
-	//カメラコントロールの初期化
+	// カメラコントロールの初期化
 	cameracontroller_->Initialize();
-	//追従対象をリセット
+	// 追従対象をリセット
 	cameracontroller_->SetTarget(player_);
-	//リセット
+	// リセット
 	cameracontroller_->Reset();
 
-	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f}; 
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameracontroller_->SetMovableArea(cameraArea);
 
 	// 自キャラの初期化
@@ -82,7 +89,9 @@ void GameScene::Update() {
 	// スカイドームの更新
 	skydome_->Update();
 
-	//カメラコントロールの更新
+	enemy_->Update();
+
+	// カメラコントロールの更新
 	cameracontroller_->Update();
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -149,6 +158,8 @@ void GameScene::Draw() {
 	player_->Draw();
 	// スカイドームの描画
 	skydome_->Draw();
+
+	enemy_->Draw();
 
 	// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
