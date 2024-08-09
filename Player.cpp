@@ -110,6 +110,15 @@ void Player::Draw() {
 	model_->Draw(worldTransform_, *viewProjection_);
 }
 
+AABB Player::GetAABB() { Vector3 worldPos = GetWorldPosition();
+	AABB aabb;
+	aabb.min = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
+	aabb.max = {worldPos.x - kWidth / 2.0f, worldPos.y - kHeight / 2.0f, worldPos.z - kWidth / 2.0f};
+	return aabb;
+}
+
+void Player::OnCollision(const Enemy* enemy) {}
+
 void Player::InputMove() {
 	// 接地状態
 	if (onGround_) {
@@ -187,6 +196,15 @@ Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
         {-kWidth / 2.0f, -kHeight / 2.0f, 0}
     };
 	return center + offsetTable[static_cast<uint32_t>(corner)];
+}
+
+Vector3 Player::GetWorldPosition() {
+	//ワールド座標を取得
+	Vector3 worldPos;
+	//ワールド行列移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
 }
 
 void Player::CheckMapMove(CollisionMapInfo& info) {

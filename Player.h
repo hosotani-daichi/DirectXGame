@@ -4,6 +4,7 @@
 #include "model.h"
 
 class MapChipField;
+class Enemy;
 
 #pragma once
 class Player {
@@ -27,6 +28,13 @@ public:
 		kRight,
 		kLeft,
 	};
+
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+	// AABBを取得
+	AABB GetAABB();
+	// 衝突応答
+	void OnCollision(const Enemy* enemy);
 
 	LRDirection lrDirection_ = LRDirection::kRight;
 
@@ -95,6 +103,8 @@ private:
 	ViewProjection* viewProjection_ = nullptr;
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
 
 	// 加速
 	static inline const float kAcceleration = 0.01f;
@@ -110,11 +120,11 @@ private:
 	static inline const float kLimitFallSpeed = 1.0f;
 	// ジャンプ初速（上方向）
 	static inline const float kJumpAcceleration = 1.0f;
-	//着地時の速度減衰率
+	// 着地時の速度減衰率
 	static inline const float kAttenuationLanding = 0.1f;
 	// 落下用
 	static inline const float kGroundSearchHeight = 0.06f;
-	//着地時の速度減衰率
+	// 着地時の速度減衰率
 	static inline const float kAttenuationWall = 0.1f;
 	// キャラクターの当たり判定サイズ
 	static inline const float kWidth = 0.8f;

@@ -36,3 +36,19 @@ void Enemy::Draw() {
 	//３Dモデルを描画
 	model_->Draw(worldTransform_, *viewProjection_);
 }
+
+Vector3 Enemy::GetWorldPosition() { return Vector3(); }
+
+AABB Enemy::GetAABB() { return AABB(); }
+
+void Enemy::OnCollision(const Enemy* enemy) { 
+	(void)enemy;
+	//ジャンプ開始
+	velocity_ += Vector3();
+}
+
+void Enemy::OnCollision(const Player* player) { 
+	(void)player;
+}
+
+

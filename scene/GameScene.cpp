@@ -23,6 +23,11 @@ GameScene::~GameScene() {
 			delete worldTransformBlock;
 		}
 	}
+
+	for (Enemy* enemy : enemies_) {
+		delete enemy;
+	}
+
 	worldTransformBlocks_.clear();
 }
 
@@ -79,6 +84,14 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 	GenerateBlocks();
+
+	for (int32_t i = 0; i < 3; ++i) {
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(11 + i * 3, 18 - i);
+			newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition);
+		enemies_.push_back(newEnemy);
+	}
+
 }
 
 void GameScene::Update() {
@@ -88,8 +101,6 @@ void GameScene::Update() {
 
 	// スカイドームの更新
 	skydome_->Update();
-
-	enemy_->Update();
 
 	// カメラコントロールの更新
 	cameracontroller_->Update();
@@ -103,6 +114,14 @@ void GameScene::Update() {
 			worldTransformBlock->UpdateMatrix();
 		}
 	}
+
+	//敵の更新
+	for (Enemy* enemy : enemies_) {
+		enemy->Update();
+	}
+
+	//すべての当たり判定を行う
+	//CheckAllCollisions();
 
 	// デバッグカメラの更新
 	debugCamera_->Update();
@@ -127,6 +146,28 @@ void GameScene::Update() {
 	}
 }
 
+	// 全ての当たり判定を行う
+void GameScene::CheckAllCollosions() {
+#pragma region {
+	// 判定対象1と2の座標
+	AABB aabb1, aabb2;
+	// 自キャラの座標
+	aabb1 = player_->GetAABB();
+	// 自キャラと敵弾全ての当たり判定
+	for (Enemy* enemy : enemies_) {
+		// 敵弾の座標
+		aabb2 = enemy->GetAABB();
+		// AABB同士の交差判定
+		if (IsCollision(aabb1, aabb2)) {
+			// 自キャラの衝突時のコールバックを呼び出す
+			player_->OnCollision(enemy);
+			// 敵弾の衝突時のコールバックを呼び出す
+			enemy->OnCollision(player_);
+		}
+	}
+}
+#pragma endregion
+
 void GameScene::Draw() {
 
 	// コマンドリストの取得
@@ -150,6 +191,10 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 
+		for (Enemy* enemy : enemies_) {
+		enemy->Draw();
+	}
+
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
@@ -158,8 +203,6 @@ void GameScene::Draw() {
 	player_->Draw();
 	// スカイドームの描画
 	skydome_->Draw();
-
-	enemy_->Draw();
 
 	// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -212,3 +255,6 @@ void GameScene::GenerateBlocks() { // 要素数
 		}
 	}
 }
+
+
+

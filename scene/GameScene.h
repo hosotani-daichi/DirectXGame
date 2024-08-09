@@ -9,6 +9,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Enemy.h"
+#include "AABB.h"
 #include <CameraController.h>
 #include <DebugCamera.h>
 #include <Player.h>
@@ -48,6 +49,8 @@ public: // メンバ関数
 
 	void GenerateBlocks();
 
+	void CheckAllCollosions();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -80,6 +83,7 @@ private: // メンバ変数
 
 	//敵キャラ
 	Enemy* enemy_;
+	std::list<Enemy*> enemies_;
 
 	// デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;

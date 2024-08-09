@@ -3,6 +3,10 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "AABB.h"
+#include <GameScene.cpp>
+
+class Player;
 
 class Enemy {
 public:
@@ -20,6 +24,14 @@ public:
 	/// 描画
 	///  </summary>
 	void Draw();
+
+		// ワールド座標を取得
+	Vector3 GetWorldPosition();
+	// AABBを取得
+	AABB GetAABB();
+	// 衝突応答
+	void OnCollision(const Enemy* enemy);
+	void OnCollision(const Player* player);
 
 private:
 	// ワールド変換データ
@@ -40,4 +52,7 @@ private:
 	static inline const float kWalkMotionTime = 1.0f;
 	//経過時間
 	float walkTimer_ = 0.0f;
+	//キャラクターの当たり判定サイズ
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
 };
