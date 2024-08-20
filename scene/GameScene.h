@@ -11,6 +11,8 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "TitleScene.h"
+#include "DeathParticles.h"
 #include <CameraController.h>
 #include <DebugCamera.h>
 #include <Player.h>
@@ -52,10 +54,25 @@ public: // メンバ関数
 
 	void CheckAllCollosions();
 
+	void ChangePhase();
+
+	//	// 終了フラグ
+	//bool finished_ = false;
+	//// デスフラグのgetter
+	//bool IsFinished() const { return finished_; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+
+	// ゲームのフェーズ（型）
+	enum class Phase {
+		kPlay,  // ゲームプレイ
+		kDeath, // デス演出
+	};
+	// ゲームの現在フェーズ
+	Phase phase_;
 
 	/// <summary>
 	/// ゲームシーン用

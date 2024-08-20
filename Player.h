@@ -52,6 +52,11 @@ public:
 	// 衝突応答
 	void OnCollision(const Enemy* enemy);
 
+	// デスフラグ
+	bool isDead_ = false;
+	// デスフラグのgetter
+	bool IsDead() const { return isDead_; }
+
 	// マップとの当たり判定情報
 	struct CollisionMapInfo {
 		bool ceiling = false;
