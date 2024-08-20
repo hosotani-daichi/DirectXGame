@@ -76,6 +76,11 @@ public:
 
 	void CheckMapWall(const CollisionMapInfo& info);
 
+	//デスフラグ
+	bool isDead_ = false;
+	//デスフラグのgetter
+	bool IsDead() const { return isDead_; }
+
 	enum Corner {
 		kRightBottom, // 右下
 		kLeftBottom,  // 左下

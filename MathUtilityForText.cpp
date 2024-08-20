@@ -78,10 +78,13 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	Matrix4x4 RotateMatY = {cosf(rot.y), 0, -sinf(rot.y), 0, 0, 1, 0, 0, sinf(rot.y), 0, cosf(rot.y), 0, 0, 0, 0, 1};
 	// 平行移動行列の作成
 	Matrix4x4 TranslateMat = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, translate.x, translate.y, translate.z, 1};
+	// スケール
+	Matrix4x4 ScallMat = {scale.x, 0, 0, 0, 0, scale.y, 0, 0, 0, 0, scale.z, 0, 0, 0, 0, 1};
 	// Ｘ軸回転*Ｙ軸回転で回転行列を合成
 	Matrix4x4 RotateMatAll = MatrixMultiply(RotateMatX, RotateMatY);
 	// 回転*平行移動だけをワールド変換行列に
-	Matrix4x4 ansMat = MatrixMultiply(RotateMatAll, TranslateMat);
+	Matrix4x4 ansMat = MatrixMultiply(ScallMat, RotateMatAll);
+	ansMat = MatrixMultiply(ansMat, TranslateMat);
 	return ansMat;
 }
 
@@ -117,7 +120,7 @@ bool IsCollision(const AABB& aabb1, const AABB& aabb2) {
 Matrix4x4 MakeRotateZMatrix(float theta) {
 	float sin = std::sin(theta);
 	float cos = std::cos(theta);
-	Matrix4x4 result{cos, sin, 0.0f, 0.0f, -sin,cos, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+	Matrix4x4 result{cos, sin, 0.0f, 0.0f, -sin, cos, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 	return result;
 }
 
