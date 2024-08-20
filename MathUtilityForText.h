@@ -1,9 +1,9 @@
 #pragma once
 
+#include "AABB.h"
 #include "Matrix4x4.h"
 #include "Vector3.h"
 #include <math.h>
-#include "AABB.h"
 
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 
@@ -31,3 +31,6 @@ Vector3& operator*=(Vector3& v, float s);
 const Vector3 operator*(const Vector3& v, float s);
 
 bool IsCollision(const AABB& aabb1, const AABB& aabb2);
+
+Matrix4x4 MakeRotateZMatrix(float theta);
+Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);

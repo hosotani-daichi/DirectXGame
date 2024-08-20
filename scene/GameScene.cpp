@@ -17,6 +17,7 @@ GameScene::~GameScene() {
 	delete mapChipField_;
 	delete modelEnemy_;
 	delete enemy_;
+	delete deathParticles_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -43,6 +44,7 @@ void GameScene::Initialize() {
 	modelBlock_ = Model::CreateFromOBJ("block");
 	model_ = Model::CreateFromOBJ("player");
 	modelEnemy_ = Model::CreateFromOBJ("enemy");
+	modelDeath_ = Model::CreateFromOBJ("deathParticle");
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
@@ -65,6 +67,10 @@ void GameScene::Initialize() {
 	player_->Initialize(model_, &viewProjection_, playerPosition);
 
 	player_->SetMapChipField(mapChipField_);
+
+	// 仮の生成処理。後で消す
+	deathParticles_ = new DeathParticles;
+	deathParticles_->Initialize(modelDeath_, &viewProjection_, playerPosition);
 
 	// カメラコントロールの生成
 	cameracontroller_ = new CameraController();
@@ -100,6 +106,8 @@ void GameScene::Update() {
 
 	// スカイドームの更新
 	skydome_->Update();
+
+	deathParticles_->Update();
 
 	CheckAllCollosions();
 
@@ -181,6 +189,7 @@ void GameScene::Draw() {
 	skydome_->Draw();
 
 	enemy_->Draw();
+	deathParticles_->Draw();
 
 	// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {

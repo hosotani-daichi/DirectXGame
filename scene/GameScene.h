@@ -2,6 +2,7 @@
 
 #include "AABB.h"
 #include "Audio.h"
+#include "DeathParticles.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
 #include "Input.h"
@@ -77,6 +78,9 @@ private: // メンバ変数
 
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	DeathParticles* deathParticles_ = nullptr;
+	Model* modelDeath_ = nullptr;
 
 	// 自キャラ
 	Player* player_ = nullptr;
