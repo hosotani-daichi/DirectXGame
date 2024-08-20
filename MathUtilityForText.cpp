@@ -117,7 +117,7 @@ bool IsCollision(const AABB& aabb1, const AABB& aabb2) {
 Matrix4x4 MakeRotateZMatrix(float theta) {
 	float sin = std::sin(theta);
 	float cos = std::cos(theta);
-	Matrix4x4 result{cos, sin, 0.0f, 0.0f, -sin, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+	Matrix4x4 result{cos, sin, 0.0f, 0.0f, -sin,cos, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 	return result;
 }
 
