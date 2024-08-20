@@ -36,8 +36,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Audio* audio = nullptr;
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
-	TitleScene* titleScreen = nullptr;
-
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
@@ -84,8 +82,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 最初のシーン初期化
 	scene = Scene::kTitle;
-	titleScreen = new TitleScene;
-	titleScreen->Initialize();
+	titleScene = new TitleScene;
+	titleScene->Initialize();
 
 	// メインループ
 	while (true) {
@@ -117,11 +115,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Draw();
 		// 描画終了
 		dxCommon->PostDraw();
+		ChangeScene();
 	}
 
 	// 各種解放
 	delete gameScene;
-	delete titleScreen;
+	delete titleScene;
 	// 3Dモデル解放
 	Model::StaticFinalize();
 	audio->Finalize();

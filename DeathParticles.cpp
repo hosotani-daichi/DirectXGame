@@ -21,7 +21,7 @@ void DeathParticles::Initialize(Model* model, ViewProjection* viewProjection, co
 void DeathParticles::Update() {
 
 	// 終了なら何もしない
-	if (isFinished_) {
+	if (finished_) {
 		return;
 	}
 	// カウンターを1フレーム分の秒数を進める
@@ -30,7 +30,7 @@ void DeathParticles::Update() {
 	if (counter_ >= kDuration) {
 		counter_ = kDuration;
 		// 終了扱いにする
-		isFinished_ = true;
+		finished_ = true;
 	}
 	for (uint32_t i = 0; i < kNumParticles; ++i) {
 		// 基本となる速度ベクトル
@@ -57,7 +57,7 @@ void DeathParticles::Update() {
 
 void DeathParticles::Draw() {
 	// 終了なら何もしない
-	if (isFinished_) {
+	if (finished_) {
 		return;
 	}
 	// 3Dモデルを描画

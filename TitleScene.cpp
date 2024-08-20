@@ -54,6 +54,8 @@ void TitleScene::Draw() {
 	//3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 	//ここに3Dオブジェクトの描画処理を追加できる
+	modelFont_->Draw(worldTransformFont_,viewProjection_);
+	modelPlayer_->Draw(worldTransformPlayer_, viewProjection_);
 	//3Dオブジェクト描画後処理
 	Model::PostDraw();
 }
