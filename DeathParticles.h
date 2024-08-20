@@ -38,7 +38,7 @@ private:
 	ViewProjection* viewProjection_ = nullptr;
 	// 存続時間（消滅までの時間）＜秒＞
 	static inline const float kDuration = 1;
-	// 移動の速さ
+	// 移動速度
 	static inline const float kSpeed = 0.1f;
 	// 分割した1個分の角度
 	static inline const float kAngleUint = 2 * std::numbers::pi_v<float> / kNumParticles;
