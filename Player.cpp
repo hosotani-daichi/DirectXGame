@@ -41,7 +41,6 @@ void Player::Update() {
 	CheckMapWall(collisionMapInfo);
 	// 接地状態の切り替え処理
 	CheckMapLanding(collisionMapInfo);
-
 	// 旋回制御
 	AnimateTurn();
 
