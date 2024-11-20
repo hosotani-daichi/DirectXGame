@@ -18,6 +18,7 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 	// 引数の内容をメンバ変数に記録
 	viewProjection_ = viewProjection;
+
 }
 
 // 更新

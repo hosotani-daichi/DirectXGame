@@ -10,7 +10,7 @@ public:
 	void Initialize(Model* model, ViewProjection* viewProjection);
 
 	///< summary>
-	/// 更新
+	/// 更新	
 	///  </summary>
 	void Update();
 
